@@ -10,7 +10,12 @@ export const connectToDB = async () => {
     }
 
     try {
-        await mongoose.connect(process.env.MONGO_PASSWORD)
+        const password = encodeURIComponent(process.env.MONGO_PASSWORD.trim());
+        const MONGO = `mongodb+srv://sumo123:${password}@cluster1.mdc7e.mongodb.net/?retryWrites=true&w=majority&appName=Cluster1`
+        await mongoose.connect(MONGO, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
         isConnected = true;
         console.log('MongoDB connected')
     } catch (error) {
